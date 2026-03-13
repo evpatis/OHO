@@ -21,9 +21,13 @@ public class SpawnVrag : MonoBehaviour
 
     void Spawn()
     {
-        
-        Vector2 pos = Random.insideUnitCircle * spawnRadius;
+        if (vragPrefab == null)
+        {
+            Debug.LogError("vragPrefab не назначен!");
+            return;
+        }
 
+        Vector2 pos = Random.insideUnitCircle * spawnRadius;
         Instantiate(vragPrefab, pos, Quaternion.identity);
     }
 }

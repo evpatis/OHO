@@ -16,7 +16,8 @@ public class bullet : MonoBehaviour
         if (!другой.CompareTag("Vrag")) return;
 
         Vrag враг = другой.GetComponent<Vrag>();
-        if (враг != null && враг.gameObject != null && враг.gameObject.activeInHierarchy)
+        //if (враг != null && враг.gameObject != null && враг.gameObject.activeInHierarchy)//
+        if (враг != null)
         {
             враг.ПолучитьУрон(урон);
         }
