@@ -4,10 +4,12 @@ public class Vrag : MonoBehaviour
 {
     public float скорость = 0.5f;
     public Transform цель;
-    public Transform target;
     public Rigidbody2D физика;
+
     public int максимальноеЗдоровье = 3;
-    private int текущееЗдоровье;
+    public int текущееЗдоровье;
+
+    public GameObject душаПрефаб;
 
 
     void Start()
@@ -29,13 +31,29 @@ public class Vrag : MonoBehaviour
 
         if (текущееЗдоровье <= 0)
         {
-            Destroy(gameObject);
+            Смерть();
         }
     }
 
+    void Смерть()
+    {
+        if (душаПрефаб !=null)
+        {
+            Instantiate(душаПрефаб, transform.position, Quaternion.identity);
+        }
+        Destroy(gameObject);
+    
+    
+    }
+    
     void FixedUpdate()
     {
+        if (this == null) return;
+        if (gameObject == null) return;
         if (цель == null) return;
+        if (цель.gameObject == null) return;
+        if (!цель.gameObject.activeInHierarchy) return;
+
 
         Vector2 направление = (цель.position - transform.position).normalized;
         физика.linearVelocity = направление * скорость;
@@ -51,4 +69,6 @@ public class Vrag : MonoBehaviour
             }
         }
     }
+    
+
 }

@@ -12,14 +12,14 @@ public class bullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D другой)
     {
-        if (другой.CompareTag("Vrag"))
+        if (другой == null) return;
+        if (!другой.CompareTag("Vrag")) return;
+
+        Vrag враг = другой.GetComponent<Vrag>();
+        if (враг != null && враг.gameObject != null && враг.gameObject.activeInHierarchy)
         {
-            Vrag враг = другой.GetComponent<Vrag>();
-            if (враг != null)
-            {
-                враг.ПолучитьУрон(урон);
-            }
-            Destroy(gameObject);
+            враг.ПолучитьУрон(урон);
         }
+        Destroy(gameObject);
     }
 }

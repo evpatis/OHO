@@ -27,6 +27,10 @@ public class Движение : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (this == null) return;
+        if (gameObject == null) return;
+        if (физика == null) return;
+
         физика.linearVelocity = ввод * скорость;
     }
 
