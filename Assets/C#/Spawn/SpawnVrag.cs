@@ -33,7 +33,7 @@ public class SpawnVrag : MonoBehaviour
     }
 }
 */
-
+/*
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -153,6 +153,95 @@ public class EnemySpawner : MonoBehaviour
         {
             Vector2 fallback = Random.insideUnitCircle.normalized * minSpawnDistance;
             spawnPos = (Vector2)mainCamera.transform.position + fallback;
+        }
+
+        Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+    }
+}
+*/
+using UnityEngine;
+
+public class EnemySpawner : MonoBehaviour
+{
+    public GameObject enemyPrefab;
+
+    [Header("Spawn Settings")]
+    public float minSpawnInterval = 0.4f;
+    public float maxSpawnInterval = 1.0f;
+
+    public float spawnOffset = 2f; // насколько далеко за экраном спавн
+
+    [Header("References")]
+    public Camera mainCamera;
+
+    float timer;
+
+    void Start()
+    {
+        if (mainCamera == null)
+            mainCamera = Camera.main;
+
+        timer = Random.Range(minSpawnInterval, maxSpawnInterval);
+    }
+
+    void Update()
+    {
+        timer -= Time.deltaTime;
+
+        if (timer <= 0)
+        {
+            SpawnEnemy();
+            timer = Random.Range(minSpawnInterval, maxSpawnInterval);
+        }
+    }
+
+    void SpawnEnemy()
+    {
+        if (enemyPrefab == null || mainCamera == null)
+            return;
+
+        float camHeight = mainCamera.orthographicSize;
+        float camWidth = camHeight * mainCamera.aspect;
+
+        Vector3 camPos = mainCamera.transform.position;
+
+        Vector2 spawnPos = Vector2.zero;
+
+        int side = Random.Range(0, 4);
+
+        switch (side)
+        {
+            // LEFT
+            case 0:
+                spawnPos = new Vector2(
+                    camPos.x - camWidth - spawnOffset,
+                    Random.Range(camPos.y - camHeight, camPos.y + camHeight)
+                );
+                break;
+
+            // RIGHT
+            case 1:
+                spawnPos = new Vector2(
+                    camPos.x + camWidth + spawnOffset,
+                    Random.Range(camPos.y - camHeight, camPos.y + camHeight)
+                );
+                break;
+
+            // TOP
+            case 2:
+                spawnPos = new Vector2(
+                    Random.Range(camPos.x - camWidth, camPos.x + camWidth),
+                    camPos.y + camHeight + spawnOffset
+                );
+                break;
+
+            // BOTTOM
+            case 3:
+                spawnPos = new Vector2(
+                    Random.Range(camPos.x - camWidth, camPos.x + camWidth),
+                    camPos.y - camHeight - spawnOffset
+                );
+                break;
         }
 
         Instantiate(enemyPrefab, spawnPos, Quaternion.identity);

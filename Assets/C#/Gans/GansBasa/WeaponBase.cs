@@ -4,7 +4,7 @@ using UnityEngine;
 public class WeaponBase : MonoBehaviour
 {
     public GameObject projectilePrefab;
-    public float cooldown = 1f;
+    public float cooldown = 1f; // перезарядка
     protected float timer;
 
     protected Transform player;
