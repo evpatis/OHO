@@ -1,81 +1,42 @@
-/*
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+
+[System.Serializable]
+public class ТипВрага 
+{
+    public GameObject префаб;
+    public float времяПоявления;
+         
+}
 
 public class SpawnVrag : MonoBehaviour
 {
-    public GameObject vragPrefab;
-    public float interval = 2f;
-    public float spawnRadius = 15f; 
+    [Header("Типы врагов")]
+    public List<ТипВрага> враги = new List<ТипВрага>();
 
-    private float timer;
+    [Header("Настройки спавна")]
+    public float minSpawnInterval = 0.4f;
+    public float maxSpawnInterval = 1.0f;
+    public float spawnOffset = 2f;
 
-    void Update()
-    {
-        timer -= Time.deltaTime;
-
-        if (timer <= 0)
-        {
-            Spawn();
-            timer = interval;
-        }
-    }
-
-    void Spawn()
-    {
-        if (vragPrefab == null)
-        {
-            Debug.LogError("vragPrefab не назначен!");
-            return;
-        }
-
-        Vector2 pos = Random.insideUnitCircle * spawnRadius;
-        Instantiate(vragPrefab, pos, Quaternion.identity);
-    }
-}
-*/
-/*
-using UnityEngine;
-
-public class EnemySpawner : MonoBehaviour
-{
-    public GameObject enemyPrefab;
-
-    [Header("Spawn Settings")]
-    public float minSpawnInterval = 0.5f;
-    public float maxSpawnInterval = 1.2f;
-
-    public float minSpawnDistance = 10f;
-    public float maxSpawnDistance = 30f;
-
-    public float minSafeDistanceFromCamera = 6f; // защита от респа перед персом 
-
-    [Header("References")]
+    [Header("Ссылки")]
     public Camera mainCamera;
 
-    private float timer;
-
-    private Vector3 lastCameraPosition;
-    private Vector2 cameraMoveDirection = Vector2.right;
+    public float timer;
+    private float времяИгры;
 
     void Start()
     {
         if (mainCamera == null)
             mainCamera = Camera.main;
-
-        if (enemyPrefab == null)
-            Debug.LogError("Enemy prefab not assigned!");
-
-        if (mainCamera != null)
-            lastCameraPosition = mainCamera.transform.position;
-
         timer = Random.Range(minSpawnInterval, maxSpawnInterval);
     }
 
     void Update()
     {
+        времяИгры += Time.deltaTime;
         timer -= Time.deltaTime;
-
-        UpdateCameraMovement();
 
         if (timer <= 0)
         {
@@ -84,82 +45,69 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    void UpdateCameraMovement()
-    {
-        if (mainCamera == null)
-            return;
-
-        Vector3 delta = mainCamera.transform.position - lastCameraPosition;
-
-        if (delta.sqrMagnitude > 0.001f)
-        {
-            cameraMoveDirection = delta.normalized;
-        }
-
-        lastCameraPosition = mainCamera.transform.position;
-    }
-
     void SpawnEnemy()
     {
-        if (enemyPrefab == null || mainCamera == null)
+        if (mainCamera == null || враги.Count == 0)
             return;
 
+        List<GameObject> доступныеВраги = new List<GameObject>();
+
+        foreach(ТипВрага враг in враги)
+        {
+            if (враг.префаб != null && времяИгры >= враг.времяПоявления)
+            {
+                доступныеВраги.Add(враг.префаб);
+            }
+        }
+
+        if (доступныеВраги.Count == 0)
+            return;
+
+        GameObject выбранныйВраг = доступныеВраги[Random.Range(0, доступныеВраги.Count)];
+
+        float camHeight = mainCamera.orthographicSize;
+        float camWidth = camHeight * mainCamera.aspect;
+        Vector3 camPos = mainCamera.transform.position;
+
         Vector2 spawnPos = Vector2.zero;
+        int side = Random.Range(0, 4);
 
-        int attempts = 0;
-        const int maxAttempts = 40;
+        switch (side)
+        { 
+        case 0: // лево
+            spawnPos = new Vector2(
+                camPos.x - camWidth - spawnOffset,
+                Random.Range(camPos.y - camHeight, camPos.y + camHeight)
+            );
+            break;
 
-        bool foundPosition = false;
+        case 1: // право
+            spawnPos = new Vector2(
+                camPos.x + camWidth + spawnOffset,
+                Random.Range(camPos.y - camHeight, camPos.y + camHeight)
+            );
+            break;
 
-        while (!foundPosition && attempts < maxAttempts)
-        {
-            Vector2 direction;
+        case 2: // верх
+            spawnPos = new Vector2(
+                Random.Range(camPos.x - camWidth, camPos.x + camWidth),
+                camPos.y + camHeight + spawnOffset
+            );
+            break;
 
-            if (cameraMoveDirection.sqrMagnitude > 0.1f)
-            {
-                // 50% впереди, 50% сзади
-                direction = Random.value > 0.5f ? cameraMoveDirection : -cameraMoveDirection;
-            }
-            else
-            {
-                direction = Random.insideUnitCircle.normalized;
-            }
-
-            //  случайный разброс
-            direction = (direction + Random.insideUnitCircle * 0.6f).normalized;
-
-            float distance = Random.Range(minSpawnDistance, maxSpawnDistance);
-
-            spawnPos = (Vector2)mainCamera.transform.position + direction * distance;
-
-            Vector3 viewport = mainCamera.WorldToViewportPoint(spawnPos);
-
-            bool visible =
-                viewport.x > -0.15f && viewport.x < 1.15f &&
-                viewport.y > -0.15f && viewport.y < 1.15f &&
-                viewport.z > 0;
-
-            float distToCamera = Vector2.Distance(spawnPos, mainCamera.transform.position);
-
-            if (!visible && distToCamera > minSafeDistanceFromCamera)
-            {
-                foundPosition = true;
-            }
-
-            attempts++;
+        case 3: // низ
+            spawnPos = new Vector2(
+                Random.Range(camPos.x - camWidth, camPos.x + camWidth),
+                camPos.y - camHeight - spawnOffset
+            );
+            break;
         }
 
-        if (!foundPosition)
-        {
-            Vector2 fallback = Random.insideUnitCircle.normalized * minSpawnDistance;
-            spawnPos = (Vector2)mainCamera.transform.position + fallback;
-        }
-
-        Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+        Instantiate(выбранныйВраг, spawnPos, Quaternion.identity);
     }
 }
-*/
-using UnityEngine;
+
+/*using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -211,7 +159,7 @@ public class EnemySpawner : MonoBehaviour
 
         switch (side)
         {
-            // LEFT
+            // лево 
             case 0:
                 spawnPos = new Vector2(
                     camPos.x - camWidth - spawnOffset,
@@ -219,7 +167,7 @@ public class EnemySpawner : MonoBehaviour
                 );
                 break;
 
-            // RIGHT
+            // право
             case 1:
                 spawnPos = new Vector2(
                     camPos.x + camWidth + spawnOffset,
@@ -227,7 +175,7 @@ public class EnemySpawner : MonoBehaviour
                 );
                 break;
 
-            // TOP
+            // вверх
             case 2:
                 spawnPos = new Vector2(
                     Random.Range(camPos.x - camWidth, camPos.x + camWidth),
@@ -235,7 +183,7 @@ public class EnemySpawner : MonoBehaviour
                 );
                 break;
 
-            // BOTTOM
+            // низ
             case 3:
                 spawnPos = new Vector2(
                     Random.Range(camPos.x - camWidth, camPos.x + camWidth),
@@ -246,4 +194,4 @@ public class EnemySpawner : MonoBehaviour
 
         Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
     }
-}
+}*/
