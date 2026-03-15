@@ -41,7 +41,8 @@ public class SpawnVrag : MonoBehaviour
         if (timer <= 0)
         {
             SpawnEnemy();
-            timer = Random.Range(minSpawnInterval, maxSpawnInterval);
+            float spawnSpeedMultiplier = Mathf.Clamp(1f + времяИгры * 0.01f, 1f, 3f);
+            timer = Random.Range(minSpawnInterval, maxSpawnInterval) / spawnSpeedMultiplier;
         }
     }
 
@@ -103,95 +104,6 @@ public class SpawnVrag : MonoBehaviour
             break;
         }
 
-        Instantiate(выбранныйВраг, spawnPos, Quaternion.identity);
+        ObjectPooler.Instance.GetObject(выбранныйВраг, spawnPos, Quaternion.identity);
     }
 }
-
-/*using UnityEngine;
-
-public class EnemySpawner : MonoBehaviour
-{
-    public GameObject enemyPrefab;
-
-    [Header("Spawn Settings")]
-    public float minSpawnInterval = 0.4f;
-    public float maxSpawnInterval = 1.0f;
-
-    public float spawnOffset = 2f; // насколько далеко за экраном спавн
-
-    [Header("References")]
-    public Camera mainCamera;
-
-    float timer;
-
-    void Start()
-    {
-        if (mainCamera == null)
-            mainCamera = Camera.main;
-
-        timer = Random.Range(minSpawnInterval, maxSpawnInterval);
-    }
-
-    void Update()
-    {
-        timer -= Time.deltaTime;
-
-        if (timer <= 0)
-        {
-            SpawnEnemy();
-            timer = Random.Range(minSpawnInterval, maxSpawnInterval);
-        }
-    }
-
-    void SpawnEnemy()
-    {
-        if (enemyPrefab == null || mainCamera == null)
-            return;
-
-        float camHeight = mainCamera.orthographicSize;
-        float camWidth = camHeight * mainCamera.aspect;
-
-        Vector3 camPos = mainCamera.transform.position;
-
-        Vector2 spawnPos = Vector2.zero;
-
-        int side = Random.Range(0, 4);
-
-        switch (side)
-        {
-            // лево 
-            case 0:
-                spawnPos = new Vector2(
-                    camPos.x - camWidth - spawnOffset,
-                    Random.Range(camPos.y - camHeight, camPos.y + camHeight)
-                );
-                break;
-
-            // право
-            case 1:
-                spawnPos = new Vector2(
-                    camPos.x + camWidth + spawnOffset,
-                    Random.Range(camPos.y - camHeight, camPos.y + camHeight)
-                );
-                break;
-
-            // вверх
-            case 2:
-                spawnPos = new Vector2(
-                    Random.Range(camPos.x - camWidth, camPos.x + camWidth),
-                    camPos.y + camHeight + spawnOffset
-                );
-                break;
-
-            // низ
-            case 3:
-                spawnPos = new Vector2(
-                    Random.Range(camPos.x - camWidth, camPos.x + camWidth),
-                    camPos.y - camHeight - spawnOffset
-                );
-                break;
-        }
-
-        Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-    }
-}*/

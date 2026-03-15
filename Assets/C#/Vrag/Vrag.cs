@@ -18,10 +18,14 @@ public class Vrag : MonoBehaviour
     private float таймерАтаки;
     private bool мертв = false;
 
-    void Start()
+    private void OnEnable()
     {
         текущееЗдоровье = максимальноеЗдоровье;
-        физика = GetComponent<Rigidbody2D>();
+        мертв = false;
+        таймерАтаки = 0f;
+
+        if (физика == null)
+            физика = GetComponent<Rigidbody2D>();
 
         GameObject игрок = GameObject.FindWithTag("Player");
         if (игрок != null)
@@ -62,7 +66,7 @@ public class Vrag : MonoBehaviour
             }
         }
 
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
     
    
@@ -85,6 +89,7 @@ public class Vrag : MonoBehaviour
             }
         }
     }
+    
 
     private void OnCollisionStay2D(Collision2D collision)
     {
