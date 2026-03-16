@@ -18,6 +18,8 @@ public class Vrag : MonoBehaviour
     private float таймерАтаки;
     private bool мертв = false;
 
+    
+
     private void OnEnable()
     {
         текущееЗдоровье = максимальноеЗдоровье;
@@ -30,6 +32,8 @@ public class Vrag : MonoBehaviour
         GameObject игрок = GameObject.FindWithTag("Player");
         if (игрок != null)
             цель = игрок.transform;
+
+        
     }
 
     void Update()
@@ -79,6 +83,11 @@ public class Vrag : MonoBehaviour
         Vector2 направление = (цель.position - transform.position).normalized;
         физика.linearVelocity = направление * скорость;
 
+        if (направление.x > 0)
+            transform.localScale = new Vector3(1, 1, 1);
+        else if (направление.x < 0)
+            transform.localScale = new Vector3(-1, 1, 1);
+
         Collider2D[] соседи = Physics2D.OverlapCircleAll(transform.position, 1f);
         foreach (Collider2D сосед in соседи)
         {
@@ -88,6 +97,8 @@ public class Vrag : MonoBehaviour
                 физика.AddForce(оттолкнуть * 10f);
             }
         }
+
+       
     }
     
 
