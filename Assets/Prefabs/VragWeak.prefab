@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 9060317944601730440}
   - component: {fileID: 6624062921387557708}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: VisualWragWeak
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
