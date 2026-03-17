@@ -7,7 +7,7 @@ public class ТипВрага
 {
     public GameObject префаб;
     public float времяПоявления;
-         
+    
 }
 
 public class SpawnVrag : MonoBehaviour
