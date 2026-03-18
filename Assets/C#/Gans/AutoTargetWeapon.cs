@@ -4,6 +4,7 @@ using UnityEngine;
 public class AutoTargetWeapon : WeaponBase
 {
     public float радиусПоиска = 15f;
+    public int damage = 1;
 
     protected override void Attack()
     {
@@ -18,6 +19,9 @@ public class AutoTargetWeapon : WeaponBase
         ProjectileBase proj = bullet.GetComponent<ProjectileBase>();
 
         if (proj != null)
+        {
+            proj.урон = damage;
             proj.Инициализация(направление);
+        }
     }
 }
