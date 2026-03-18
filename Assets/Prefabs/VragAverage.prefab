@@ -124,8 +124,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8522386420800338620}
   - component: {fileID: 6903144275273583419}
-  - component: {fileID: 5927497076606483241}
   - component: {fileID: 2492329535090188859}
+  - component: {fileID: -593709670042175237}
   m_Layer: 0
   m_Name: VragAverage
   m_TagString: Vrag
@@ -142,7 +142,7 @@ Transform:
   m_GameObject: {fileID: 8768654025131396822}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -90.76, y: 2.02, z: 0}
+  m_LocalPosition: {x: -90.76, y: 2.078, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -175,9 +175,30 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!58 &5927497076606483241
-CircleCollider2D:
+  m_Constraints: 4
+--- !u!114 &2492329535090188859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8768654025131396822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a60fc21899d5b8f4c97ce476ebf1ecc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Vrag
+  "\u0441\u043A\u043E\u0440\u043E\u0441\u0442\u044C": 2
+  "\u0446\u0435\u043B\u044C": {fileID: 0}
+  "\u0444\u0438\u0437\u0438\u043A\u0430": {fileID: 0}
+  "\u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435\u0417\u0434\u043E\u0440\u043E\u0432\u044C\u0435": 5
+  "\u0442\u0435\u043A\u0443\u0449\u0435\u0435\u0417\u0434\u043E\u0440\u043E\u0432\u044C\u0435": 5
+  "\u0434\u0443\u0448\u0430\u041F\u0440\u0435\u0444\u0430\u0431": {fileID: 1010856710401983091, guid: c92af6cf49b65c34db7b06a3f21af394, type: 3}
+  "\u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E\u041E\u043F\u044B\u0442\u0430": 2
+  "\u0443\u0440\u043E\u043D\u041A\u0430\u0441\u0430\u043D\u0438\u0435\u043C": 2
+  "\u0437\u0430\u0434\u0435\u0440\u0436\u043A\u0430\u041C\u0435\u0436\u0434\u0443\u0410\u0442\u0430\u043A\u0430\u043C\u0438": 1
+--- !u!70 &-593709670042175237
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -206,30 +227,10 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0019495785, y: 0.00000017881393}
-  m_Radius: 0.26017407
---- !u!114 &2492329535090188859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8768654025131396822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a60fc21899d5b8f4c97ce476ebf1ecc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Vrag
-  "\u0441\u043A\u043E\u0440\u043E\u0441\u0442\u044C": 2
-  "\u0446\u0435\u043B\u044C": {fileID: 0}
-  "\u0444\u0438\u0437\u0438\u043A\u0430": {fileID: 0}
-  "\u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435\u0417\u0434\u043E\u0440\u043E\u0432\u044C\u0435": 5
-  "\u0442\u0435\u043A\u0443\u0449\u0435\u0435\u0417\u0434\u043E\u0440\u043E\u0432\u044C\u0435": 5
-  "\u0434\u0443\u0448\u0430\u041F\u0440\u0435\u0444\u0430\u0431": {fileID: 1010856710401983091, guid: c92af6cf49b65c34db7b06a3f21af394, type: 3}
-  "\u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E\u041E\u043F\u044B\u0442\u0430": 2
-  "\u0443\u0440\u043E\u043D\u041A\u0430\u0441\u0430\u043D\u0438\u0435\u043C": 2
-  "\u0437\u0430\u0434\u0435\u0440\u0436\u043A\u0430\u041C\u0435\u0436\u0434\u0443\u0410\u0442\u0430\u043A\u0430\u043C\u0438": 1
+  m_Offset: {x: -0.1275711, y: 0.1130712}
+  m_Size: {x: 0.7551422, y: 2.188696}
+  m_Direction: 0

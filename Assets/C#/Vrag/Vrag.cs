@@ -104,6 +104,7 @@ public class Vrag : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        Debug.Log("Есть касание с: " + collision.gameObject.name);
         if (!collision.gameObject.CompareTag("Player")) return;
         if (таймерАтаки > 0) return;
 
