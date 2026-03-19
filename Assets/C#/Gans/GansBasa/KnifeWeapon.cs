@@ -1,28 +1,45 @@
-// пуля в ближайшего врага 
 using UnityEngine;
 
 public class KnifeWeapon : WeaponBase
 {
-    public float attackRadius = 10f;
-    public Transform firePoint;
-    public int damage = 1;
+    public float attackRadius = 1.2f;
+    public int damage = 2;
+    public float attackDistance = 1f;
+
+    public GameObject hitVisualPrefab;
 
     protected override void Attack()
     {
-        Transform enemy = FindNearestEnemy(attackRadius);
-        if (enemy == null) return;
-        if (projectilePrefab == null) return;
-        if (firePoint == null) return;
+        if (player == null) return;
 
-        Vector2 dir = (enemy.position - firePoint.position).normalized;
+        SpriteRenderer playerSprite = player.GetComponentInChildren<SpriteRenderer>();
+        if (playerSprite == null) return;
 
-        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+        Vector2 direction = playerSprite.flipX ? Vector2.left : Vector2.right;
+        Vector2 hitPosition = (Vector2)player.position + direction * attackDistance;
 
-        ProjectileBase projectileScript = projectile.GetComponent<ProjectileBase>();
-        if (projectileScript != null)
+        if (hitVisualPrefab != null)
         {
-            projectileScript.урон = damage;
-            projectileScript.Инициализация(dir);
+            GameObject hit = Instantiate(hitVisualPrefab, hitPosition, Quaternion.identity);
+
+            Vector3 scale = hit.transform.localScale;
+            scale.x = playerSprite.flipX ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
+            hit.transform.localScale = scale;
         }
+
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(hitPosition, attackRadius);
+
+        foreach (Collider2D enemyCol in enemies)
+        {
+            if (!enemyCol.CompareTag("Vrag")) continue;
+
+            Vrag enemy = enemyCol.GetComponent<Vrag>();
+            if (enemy != null)
+            {
+                enemy.ПолучитьУрон(damage);
+            }
+        }
+
+        Debug.Log("Нож ударил");
     }
 }

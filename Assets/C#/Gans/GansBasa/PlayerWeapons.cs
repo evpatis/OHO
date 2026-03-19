@@ -1,25 +1,65 @@
+
 using UnityEngine;
 
 public class PlayerWeapons : MonoBehaviour
 {
-    public AutoTargetWeapon autoWeapon;
-    public SwordWeapon swordWeapon;
+    public KnifeWeapon KnifeWeapon;
+    public MagicWeapon magicWeapon;
 
     private void Start()
     {
-        if (autoWeapon != null)
-            autoWeapon.enabled = true;
+        if (KnifeWeapon != null)
+            KnifeWeapon.enabled = true;
 
-        if (swordWeapon != null)
-            swordWeapon.enabled = false;
+        if (magicWeapon != null)
+            magicWeapon.enabled = false;
     }
 
-    public void UnlockSword()
-    {
-        if (swordWeapon != null && !swordWeapon.enabled)
+    public void UnlockMagic()
+    { 
+        if (magicWeapon == null);
         {
-            swordWeapon.enabled = true;
-            Debug.Log("Меч открыт");
+            Debug.LogError("MagicWeapon не назначен PlayerWeapons");
+            return;
+        }
+
+        if (!magicWeapon.enabled)
+        {
+            magicWeapon.enabled = true;
+            Debug.Log("Магия открыта");
+        }
+
+        else
+        {
+            Debug.Log("Магия уже была открыта");
         }
     }
+
+    public void UpgradeKnifeDamage (int amount)
+    {
+        if (KnifeWeapon != null)
+        {
+            KnifeWeapon.damage +=  amount;
+            Debug.Log("Урон ножа увеличен");
+        }
+    }
+
+    public void UpgradeKnifeCooldow(float amount)
+    { 
+        if (KnifeWeapon != null)
+        {
+            KnifeWeapon.cooldown = Mathf.Max(0.2f, KnifeWeapon.cooldown - amount );
+            Debug.Log("Скорость ножа увеличен");
+        }
+    }
+
+    public void UpgradeMagicDamage (int amount)
+    { 
+    if (magicWeapon !=null)
+        {
+            magicWeapon.damage += amount;
+            Debug.Log("Урон магии увеличен");
+        }
+    }
+
 }
