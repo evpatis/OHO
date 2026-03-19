@@ -80,7 +80,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1945213729
   m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 866808690, guid: c28713ac0f393f241b7877fbd3d69257, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -91,7 +91,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &5935598762788215285
 Animator:
   serializedVersion: 7
@@ -231,6 +231,6 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.057926178, y: 0.07620138}
-  m_Size: {x: 0.45198822, y: 1.0662161}
+  m_Offset: {x: -0.008144379, y: 0.20386744}
+  m_Size: {x: 0.39225006, y: 0.39225006}
   m_Direction: 0
