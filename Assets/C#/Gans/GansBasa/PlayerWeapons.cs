@@ -1,65 +1,51 @@
-
 using UnityEngine;
 
 public class PlayerWeapons : MonoBehaviour
 {
-    public KnifeWeapon KnifeWeapon;
+    public KnifeWeapon knifeWeapon;
     public MagicWeapon magicWeapon;
 
     private void Start()
     {
-        if (KnifeWeapon != null)
-            KnifeWeapon.enabled = true;
+        Debug.Log("PlayerWeapons Start");
+
+        if (knifeWeapon != null)
+        {
+            knifeWeapon.enabled = true;
+            Debug.Log("KnifeWeapon включен");
+        }
 
         if (magicWeapon != null)
+        {
             magicWeapon.enabled = false;
+            Debug.Log("MagicWeapon выключен на старте");
+        }
+        else
+        {
+            Debug.LogError("magicWeapon НЕ назначен в PlayerWeapons");
+        }
     }
 
     public void UnlockMagic()
-    { 
-        if (magicWeapon == null);
+    {
+        Debug.Log("UnlockMagic вызван");
+
+        if (magicWeapon == null)
         {
-            Debug.LogError("MagicWeapon не назначен PlayerWeapons");
+            Debug.LogError("MagicWeapon не назначен");
             return;
         }
 
-        if (!magicWeapon.enabled)
-        {
-            magicWeapon.enabled = true;
-            Debug.Log("Магия открыта");
-        }
-
-        else
-        {
-            Debug.Log("Магия уже была открыта");
-        }
+        magicWeapon.enabled = true;
+        Debug.Log("Магия включена. enabled = " + magicWeapon.enabled);
     }
 
-    public void UpgradeKnifeDamage (int amount)
+    public void UpgradeKnifeDamage(int amount)
     {
-        if (KnifeWeapon != null)
+        if (knifeWeapon != null)
         {
-            KnifeWeapon.damage +=  amount;
+            knifeWeapon.damage += amount;
             Debug.Log("Урон ножа увеличен");
         }
     }
-
-    public void UpgradeKnifeCooldow(float amount)
-    { 
-        if (KnifeWeapon != null)
-        {
-            KnifeWeapon.cooldown = Mathf.Max(0.2f, KnifeWeapon.cooldown - amount );
-            Debug.Log("Скорость ножа увеличен");
-        }
-    }
-
-    public void UpgradeMagicDamage (int amount)
-    { 
-    if (magicWeapon !=null)
-        {
-            magicWeapon.damage += amount;
-            Debug.Log("Урон магии увеличен");
-        }
-    }
-
 }
