@@ -30,19 +30,19 @@ public class LevelUpButtons : MonoBehaviour
             опытИгрока.ЗакрытьВыборУлучшения();
     }
 
-    public void UnlockSword()
+    public void UnlockMagic()
     {
         if (playerWeapons != null)
-            playerWeapons.UnlockSword();
+            playerWeapons.UnlockMagic();
 
         if (опытИгрока != null)
             опытИгрока.ЗакрытьВыборУлучшения();
     }
 
-    public void UpgradeAutoWeaponDamage()
+    public void UpgradeKnifeDamage()
     {
-        if (playerWeapons != null && playerWeapons.autoWeapon != null)
-            playerWeapons.autoWeapon.damage += 1;
+        if (playerWeapons != null)
+            playerWeapons.UpgradeKnifeDamage(1);
 
         if (опытИгрока != null)
             опытИгрока.ЗакрытьВыборУлучшения();
