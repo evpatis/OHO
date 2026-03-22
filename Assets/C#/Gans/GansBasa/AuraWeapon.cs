@@ -6,14 +6,52 @@ public class AuraWeapon : WeaponBase
     public int damage = 1;
 
     [Header("Визуал")]
-    public GameObject auraVisual;
+    public GameObject auraVisualPrefab;
+
+    private GameObject currentAuraVisual;
 
     protected override void Start()
     {
         base.Start();
 
-        if (auraVisual != null)
-            auraVisual.SetActive(true);
+        if (auraVisualPrefab != null && currentAuraVisual == null)
+        {
+            currentAuraVisual = Instantiate(auraVisualPrefab, player.position, Quaternion.identity);
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (player == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+                player = playerObj.transform;
+        }
+
+        if (auraVisualPrefab != null && currentAuraVisual == null && player != null)
+        {
+            currentAuraVisual = Instantiate(auraVisualPrefab, player.position, Quaternion.identity);
+        }
+
+        if (currentAuraVisual != null)
+            currentAuraVisual.SetActive(true);
+    }
+
+    private void OnDisable()
+    {
+        if (currentAuraVisual != null)
+            currentAuraVisual.SetActive(false);
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if (currentAuraVisual != null && player != null)
+        {
+            currentAuraVisual.transform.position = player.position;
+        }
     }
 
     protected override void Attack()
@@ -34,15 +72,5 @@ public class AuraWeapon : WeaponBase
         }
 
         Debug.Log("Аура нанесла урон");
-    }
-
-    private void Update()
-    {
-        base.Update();
-
-        if (auraVisual != null && player != null)
-        {
-            auraVisual.transform.position = player.position;
-        }
     }
 }
