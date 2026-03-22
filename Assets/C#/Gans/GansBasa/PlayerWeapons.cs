@@ -4,32 +4,22 @@ public class PlayerWeapons : MonoBehaviour
 {
     public KnifeWeapon knifeWeapon;
     public MagicWeapon magicWeapon;
+    public AuraWeapon auraWeapon;
 
     private void Start()
     {
-        Debug.Log("PlayerWeapons Start");
-
         if (knifeWeapon != null)
-        {
             knifeWeapon.enabled = true;
-            Debug.Log("KnifeWeapon включен");
-        }
 
         if (magicWeapon != null)
-        {
             magicWeapon.enabled = false;
-            Debug.Log("MagicWeapon выключен на старте");
-        }
-        else
-        {
-            Debug.LogError("magicWeapon НЕ назначен в PlayerWeapons");
-        }
+
+        if (auraWeapon != null)
+            auraWeapon.enabled = false;
     }
 
     public void UnlockMagic()
     {
-        Debug.Log("UnlockMagic вызван");
-
         if (magicWeapon == null)
         {
             Debug.LogError("MagicWeapon не назначен");
@@ -37,7 +27,19 @@ public class PlayerWeapons : MonoBehaviour
         }
 
         magicWeapon.enabled = true;
-        Debug.Log("Магия включена. enabled = " + magicWeapon.enabled);
+        Debug.Log("Магия включена");
+    }
+
+    public void UnlockAura()
+    {
+        if (auraWeapon == null)
+        {
+            Debug.LogError("AuraWeapon не назначен");
+            return;
+        }
+
+        auraWeapon.enabled = true;
+        Debug.Log("Аура включена");
     }
 
     public void UpgradeKnifeDamage(int amount)
@@ -47,5 +49,33 @@ public class PlayerWeapons : MonoBehaviour
             knifeWeapon.damage += amount;
             Debug.Log("Урон ножа увеличен");
         }
+    }
+
+    public void UpgradeMagicDamage(int amount)
+    {
+        if (magicWeapon != null && magicWeapon.enabled)
+        {
+            magicWeapon.damage += amount;
+            Debug.Log("Урон магии увеличен");
+        }
+    }
+
+    public void UpgradeAuraDamage(int amount)
+    {
+        if (auraWeapon != null && auraWeapon.enabled)
+        {
+            auraWeapon.damage += amount;
+            Debug.Log("Урон ауры увеличен");
+        }
+    }
+
+    public bool HasMagic()
+    {
+        return magicWeapon != null && magicWeapon.enabled;
+    }
+
+    public bool HasAura()
+    {
+        return auraWeapon != null && auraWeapon.enabled;
     }
 }
