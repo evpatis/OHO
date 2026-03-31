@@ -6,6 +6,7 @@ public class UpgradeManager : MonoBehaviour
     public ОпытИгрока опытИгрока;
     public ИгрокЗдоровье игрокЗдоровье;
     public PlayerWeapons playerWeapons;
+    public PlayerStats playerStats;
 
     public UpgradeCardUI card1;
     public UpgradeCardUI card2;
@@ -31,7 +32,9 @@ public class UpgradeManager : MonoBehaviour
 
         SkullDamage,
 
-        NecroBombDamage
+        NecroBombDamage,
+
+        ArmorUp
     }
 
     [System.Serializable]
@@ -190,6 +193,14 @@ public class UpgradeManager : MonoBehaviour
             });
         }
 
+        upgrades.Add(new UpgradeData
+        { 
+            type = UpgradeType.ArmorUp,
+            title = "+1 Броня",
+            description = "Снижает получаймый урон"
+        });
+            
+
         return upgrades;
     }
 
@@ -198,61 +209,79 @@ public class UpgradeManager : MonoBehaviour
         switch (data.type)
         {
             case UpgradeType.HealthUp:
-                игрокЗдоровье.максимальноеХП += 2;
-                игрокЗдоровье.текущееХП += 2;
+                if (playerStats != null)
+                    playerStats.AddHealth(2);
                 break;
 
             case UpgradeType.MoveSpeedUp:
-                Движение movement = FindObjectOfType<Движение>();
-                if (movement != null)
-                    movement.скорость *= 1.1f;
+                if (playerStats != null)
+                    playerStats.AddSpeed(1f);
                 break;
 
             case UpgradeType.OpenMagic:
-                playerWeapons.UnlockMagic();
+                if (playerWeapons != null)
+                    playerWeapons.UnlockMagic();
                 break;
 
             case UpgradeType.OpenAura:
-                playerWeapons.UnlockAura();
+                if (playerWeapons != null)
+                    playerWeapons.UnlockAura();
                 break;
 
             case UpgradeType.OpenSkull:
-                playerWeapons.UnlockSkull();
+                if (playerWeapons != null)
+                    playerWeapons.UnlockSkull();
                 break;
 
             case UpgradeType.OpenNecroBomb:
-                playerWeapons.UnlockNecroBomb();
+                if (playerWeapons != null)
+                    playerWeapons.UnlockNecroBomb();
                 break;
 
             case UpgradeType.KnifeDamage:
-                playerWeapons.UpgradeKnifeDamage(1);
+                if (playerWeapons != null)
+                    playerWeapons.UpgradeKnifeDamage(1);
                 break;
 
             case UpgradeType.KnifeSpeed:
-                playerWeapons.UpgradeKnifeCooldown(0.15f);
+                if (playerWeapons != null)
+                    playerWeapons.UpgradeKnifeCooldown(0.15f);
                 break;
 
             case UpgradeType.MagicDamage:
-                playerWeapons.UpgradeMagicDamage(1);
+                if (playerWeapons != null)
+                    playerWeapons.UpgradeMagicDamage(1);
                 break;
 
             case UpgradeType.AuraDamage:
-                playerWeapons.UpgradeAuraDamage(1);
+                if (playerWeapons != null)
+                    playerWeapons.UpgradeAuraDamage(1);
                 break;
 
             case UpgradeType.AuraRadius:
-                playerWeapons.UpgradeAuraRadius(0.3f);
+                if (playerWeapons != null)
+                    playerWeapons.UpgradeAuraRadius(0.3f);
                 break;
 
             case UpgradeType.SkullDamage:
-                playerWeapons.UpgradeSkullDamage(1);
+                if (playerWeapons != null)
+                    playerWeapons.UpgradeSkullDamage(1);
                 break;
 
             case UpgradeType.NecroBombDamage:
-                playerWeapons.UpgradeNecroBombDamage(2);
+                if (playerWeapons != null)
+                    playerWeapons.UpgradeNecroBombDamage(2);
                 break;
+
+            case UpgradeType.ArmorUp:
+                if (playerStats != null)
+                    playerStats.AddArmor(1);
+                break;
+
+
         }
 
-        опытИгрока.ЗакрытьВыборУлучшения();
+        if (опытИгрока != null)
+            опытИгрока.ЗакрытьВыборУлучшения();
     }
 }

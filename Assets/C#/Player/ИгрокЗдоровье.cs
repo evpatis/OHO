@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class ИгрокЗдоровье : MonoBehaviour
 {
-    public int максимальноеХП = 10;
-    public int текущееХП;
-
     public GameObject gameOverPanel;
 
     private bool мертв = false;
 
+    private PlayerStats stats;
+
     private void Start()
     {
         Time.timeScale = 1f;
-        текущееХП = максимальноеХП;
+
+        stats = GetComponent<PlayerStats>();
 
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
@@ -21,11 +21,34 @@ public class ИгрокЗдоровье : MonoBehaviour
     public void ПолучитьУрон(int урон)
     {
         if (мертв) return;
+        if (stats == null) return;
 
-        текущееХП -= урон;
-        Debug.Log("Игрок получил урон. ХП: " + текущееХП);
+        int остатокУрона = урон;
 
-        if (текущееХП <= 0)
+        
+        if (stats.currentArmor > 0)
+        {
+            if (stats.currentArmor >= остатокУрона)
+            {
+                stats.currentArmor -= остатокУрона;
+                остатокУрона = 0;
+            }
+            else
+            {
+                остатокУрона -= stats.currentArmor;
+                stats.currentArmor = 0;
+            }
+        }
+
+        
+        if (остатокУрона > 0)
+        {
+            stats.currentHP -= остатокУрона;
+        }
+
+        Debug.Log("HP: " + stats.currentHP + " | Armor: " + stats.currentArmor);
+
+        if (stats.currentHP <= 0)
         {
             Смерть();
         }
@@ -40,12 +63,7 @@ public class ИгрокЗдоровье : MonoBehaviour
 
         if (gameOverPanel != null)
         {
-            Debug.Log("Панель найдена");
             gameOverPanel.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("gameOverPanel не назначен!");
         }
 
         Time.timeScale = 0f;

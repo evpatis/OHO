@@ -18,8 +18,6 @@ public class Vrag : MonoBehaviour
     private float таймерАтаки;
     private bool мертв = false;
 
-    
-
     private void OnEnable()
     {
         текущееЗдоровье = максимальноеЗдоровье;
@@ -32,8 +30,6 @@ public class Vrag : MonoBehaviour
         GameObject игрок = GameObject.FindWithTag("Player");
         if (игрок != null)
             цель = игрок.transform;
-
-        
     }
 
     void Update()
@@ -53,7 +49,7 @@ public class Vrag : MonoBehaviour
             Смерть();
         }
     }
-    
+
     void Смерть()
     {
         if (мертв) return;
@@ -72,8 +68,7 @@ public class Vrag : MonoBehaviour
 
         gameObject.SetActive(false);
     }
-    
-   
+
     void FixedUpdate()
     {
         if (мертв) return;
@@ -97,21 +92,22 @@ public class Vrag : MonoBehaviour
                 физика.AddForce(оттолкнуть * 10f);
             }
         }
-
-       
     }
-    
 
     private void OnCollisionStay2D(Collision2D collision)
     {
         Debug.Log("Есть касание с: " + collision.gameObject.name);
+
         if (!collision.gameObject.CompareTag("Player")) return;
         if (таймерАтаки > 0) return;
 
         ИгрокЗдоровье игрок = collision.gameObject.GetComponent<ИгрокЗдоровье>();
+
         if (игрок != null)
         {
             игрок.ПолучитьУрон(уронКасанием);
+            Debug.Log("Враг нанес урон: " + уронКасанием);
+
             таймерАтаки = задержкаМеждуАтаками;
         }
     }
